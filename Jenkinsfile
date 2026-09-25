@@ -34,12 +34,21 @@ pipeline {
             }
         }
 
-        stage('Docker Push') {
+                stage('Docker Push') {
             steps {
                 echo '🚀 Push de l\'image sur DockerHub'
-                sh "echo \$DOCKERHUB_PASSWORD | docker login -u ${DOCKERHUB_USER} --password-stdin"
-                sh "docker push ${DOCKERHUB_USER}/${IMAGE_NAME}:${IMAGE_TAG}"
-                sh "docker push ${DOCKERHUB_USER}/${IMAGE_NAME}:latest"
+                withCredentials([usernamePassword(
+                    credentialsId: 'dockerhub-creds',
+                    usernameVariable: 'DOCKER_USER',
+                    passwordVariable: 'DOCKER_PASS'
+                )]) {
+                    sh '''
+                        echo "Debug: user=$DOCKER_USER, pass length=${#DOCKER_PASS}"
+                        echo "$DOCKER_PASS" | docker login -u "$DOCKER_USER" --password-stdin
+                        docker push $DOCKERHUB_USER/backend-devops:$IMAGE_TAG
+                        docker push $DOCKERHUB_USER/backend-devops:latest
+                    '''
+                }
             }
         }
     }
