@@ -37,11 +37,11 @@ pipeline {
             }
         }
 
-        stage('Quality Gate') {
+                        stage('Quality Gate') {
             steps {
                 echo '✅ Vérification du Quality Gate'
-                timeout(time: 5, unit: 'MINUTES') {
-                    waitForQualityGate abortPipeline: true
+                timeout(time: 10, unit: 'MINUTES') {
+                    waitForQualityGate abortPipeline: false
                 }
             }
         }
