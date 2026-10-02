@@ -48,10 +48,12 @@ public class ProjetDetailleServiceImpl implements IProjetDetailleService {
     }
 
     @Override
-    public ProjetDetaille assignProjetDetailleToProjet(Long projetDetailleId, Long projetId) {
-        ProjetDetaille projetDetaille = projetDetailleRepository.findById(projetDetailleId).orElse(null);
-        Projet projet = projetRepository.findById(projetId).orElse(null);
-        projetDetaille.setProjet(projet);
-        return projetDetailleRepository.save(projetDetaille);
-    }
+public ProjetDetaille assignProjetDetailleToProjet(Long projetDetailleId, Long projetId) {
+    ProjetDetaille projetDetaille = projetDetailleRepository.findById(projetDetailleId)
+        .orElseThrow(() -> new RuntimeException("ProjetDetaille introuvable avec l'id : " + projetDetailleId));
+    Projet projet = projetRepository.findById(projetId)
+        .orElseThrow(() -> new RuntimeException("Projet introuvable avec l'id : " + projetId));
+    projetDetaille.setProjet(projet);
+    return projetDetailleRepository.save(projetDetaille);
+}
 }
