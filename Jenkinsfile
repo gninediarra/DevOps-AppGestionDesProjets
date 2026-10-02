@@ -25,7 +25,25 @@ pipeline {
                 }
             }
         }
+        stage('SonarQube Analysis') {
+            steps {
+                echo '🔍 Analyse SonarQube'
+                dir('backend') {
+                    withSonarQubeEnv('SonarQube') {
+                        sh './mvnw clean verify sonar:sonar -Dsonar.login=c08050367a173f466824f9a0a82baf8dc069a1bc'
+                    }
+                }
+            }
+        }
 
+        stage('Quality Gate') {
+            steps {
+                echo '✅ Vérification du Quality Gate'
+                timeout(time: 5, unit: 'MINUTES') {
+                    waitForQualityGate abortPipeline: true
+                }
+            }
+        }
         stage('Docker Build') {
             steps {
                 echo '🐳 Construction de l\'image Docker'
