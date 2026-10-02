@@ -25,12 +25,13 @@ pipeline {
                 }
             }
         }
+
         stage('SonarQube Analysis') {
             steps {
                 echo '🔍 Analyse SonarQube'
                 dir('backend') {
                     withSonarQubeEnv('SonarQube') {
-                        sh './mvnw clean verify sonar:sonar -Dsonar.login=c08050367a173f466824f9a0a82baf8dc069a1bc'
+                        sh './mvnw clean verify sonar:sonar'
                     }
                 }
             }
@@ -44,6 +45,7 @@ pipeline {
                 }
             }
         }
+
         stage('Docker Build') {
             steps {
                 echo '🐳 Construction de l\'image Docker'
@@ -52,7 +54,7 @@ pipeline {
             }
         }
 
-                stage('Docker Push') {
+        stage('Docker Push') {
             steps {
                 echo '🚀 Push de l\'image sur DockerHub'
                 withCredentials([usernamePassword(
