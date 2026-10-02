@@ -50,19 +50,23 @@ public class EquipeServiceImpl implements IEquipeService {
         return equipeRepository.findByEntrepriseId(entrepriseId);
     }
 
-    @Override
-    public Equipe assignEquipeToEntreprise(Long equipeId, Long entrepriseId) {
-        Equipe equipe = equipeRepository.findById(equipeId).orElse(null);
-        Entreprise entreprise = entrepriseRepository.findById(entrepriseId).orElse(null);
-        equipe.setEntreprise(entreprise);
-        return equipeRepository.save(equipe);
-    }
+   @Override
+public Equipe assignEquipeToEntreprise(Long equipeId, Long entrepriseId) {
+    Equipe equipe = equipeRepository.findById(equipeId)
+        .orElseThrow(() -> new RuntimeException("Equipe introuvable avec l'id : " + equipeId));
+    Entreprise entreprise = entrepriseRepository.findById(entrepriseId)
+        .orElseThrow(() -> new RuntimeException("Entreprise introuvable avec l'id : " + entrepriseId));
+    equipe.setEntreprise(entreprise);
+    return equipeRepository.save(equipe);
+}
 
     @Override
-    public Equipe assignEquipeToProjet(Long equipeId, Long projetId) {
-        Equipe equipe = equipeRepository.findById(equipeId).orElse(null);
-        Projet projet = projetRepository.findById(projetId).orElse(null);
-        equipe.getProjets().add(projet);
-        return equipeRepository.save(equipe);
-    }
+public Equipe assignEquipeToProjet(Long equipeId, Long projetId) {
+    Equipe equipe = equipeRepository.findById(equipeId)
+        .orElseThrow(() -> new RuntimeException("Equipe introuvable avec l'id : " + equipeId));
+    Projet projet = projetRepository.findById(projetId)
+        .orElseThrow(() -> new RuntimeException("Projet introuvable avec l'id : " + projetId));
+    equipe.getProjets().add(projet);
+    return equipeRepository.save(equipe);
+}
 }
