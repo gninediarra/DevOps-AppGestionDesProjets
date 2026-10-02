@@ -33,7 +33,6 @@
     <properties>
     <java.version>17</java.version>
     <sonar.host.url>http://localhost:9000</sonar.host.url>
-    <sonar.login>c08050367a173f466824f9a0a82baf8dc069a1bc</sonar.login>
     <sonar.projectKey>backend-devops</sonar.projectKey>
     <sonar.projectName>Backend DevOps</sonar.projectName>
 </properties>
